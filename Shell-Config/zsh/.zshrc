@@ -27,27 +27,17 @@ zinit light zsh-users/zsh-completions
 # Substring history search (type and press up arrow)
 zinit light zsh-users/zsh-history-substring-search
 
-# Fast directory jumping
-zinit light agkozak/zsh-z
-
 # Colored man pages
 zinit light ael-code/zsh-colored-man-pages
 
 # Auto-pair brackets, quotes
 zinit light hlissner/zsh-autopair
 
-# Better directory listing with icons
-zinit light supercrabtree/k
-
-# Git status in prompt additions
-zinit light woefe/git-prompt.zsh
-
 # --- Snippets (useful OMZ plugins without full OMZ) ---
 zinit snippet OMZP::git
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::sudo
 zinit snippet OMZP::extract
-zinit snippet OMZP::cp
 
 # --- Completions ---
 autoload -Uz compinit
@@ -82,13 +72,29 @@ bindkey '^[[F' end-of-line
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 
+# Ctrl+Z toggle suspend/resume
+fancy-ctrl-z() {
+  if [[ $#BUFFER -eq 0 ]]; then
+    fg
+    zle redisplay
+  else
+    zle push-input
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
 # --- Useful Options ---
 setopt AUTO_CD              # cd without typing cd
 setopt AUTO_PUSHD           # Push directories to stack
 setopt PUSHD_IGNORE_DUPS    # Ignore duplicate directories
-setopt CORRECT              # Command correction
 setopt INTERACTIVE_COMMENTS # Allow comments in interactive shell
 setopt NO_BEEP              # No beep sound
+
+# --- Environment Variables ---
+export EDITOR='nano'
+export VISUAL='code'
+export LESS='-R'
 
 # --- Starship Prompt ---
 eval "$(starship init zsh)"
@@ -140,10 +146,6 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias ~='cd ~'
 
-# Safety
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
 
 # GPU monitoring
 alias gpu='nvidia-smi'
@@ -155,6 +157,41 @@ alias hackbox='distrobox enter hackbox -- bash'
 # Quick edit configs
 alias zshrc='${EDITOR:-nano} ~/.zshrc'
 alias reload='source ~/.zshrc'
+
+# Search & Utility
+alias ff='find . -name'               # ff "*.txt"
+alias grep='grep --color=auto'
+alias serve='python3 -m http.server'  # Quick web server
+
+# Clipboard (WSL)
+alias copy='clip.exe'
+alias paste='powershell.exe Get-Clipboard'
+
+# Disk usage
+alias df='df -h'
+alias du='du -h'
+alias duf='du -sh * | sort -h'
+
+# --- Useful Functions ---
+
+# Buat folder dan langsung masuk
+mkcd() { mkdir -p "$1" && cd "$1" }
+
+# Extract dengan auto-detect
+ex() {
+  case $1 in
+    *.tar.bz2) tar xjf $1 ;;
+    *.tar.gz)  tar xzf $1 ;;
+    *.tar.xz)  tar xJf $1 ;;
+    *.zip)     unzip $1 ;;
+    *.7z)      7z x $1 ;;
+    *.rar)     unrar x $1 ;;
+    *)         echo "Unknown format: $1" ;;
+  esac
+}
+
+# Backup file dengan timestamp
+backup() { cp "$1" "$1.bak.$(date +%Y%m%d_%H%M%S)" }
 
 # --- FNM (Fast Node Manager) ---
 FNM_PATH="/home/fahmi/.local/share/fnm"
@@ -176,3 +213,13 @@ alias ida='/home/fahmi/Downloads/AppImage/IDA\ Pro\ 7.6/start_ida.sh'
 if [[ -o interactive ]]; then
     fastfetch 2>/dev/null || echo "Welcome to ZSH!"
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Created by `pipx` on 2026-01-08 04:42:16
+export PATH="$PATH:/home/fahmi/.local/bin"
+
+
+sudo dnf update -y && sudo dnf upgrade -y
