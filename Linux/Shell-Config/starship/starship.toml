@@ -1,0 +1,495 @@
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                    🚀 STARSHIP CONFIGURATION - ULTIMATE EDITION 🚀           ║
+# ║                         https://starship.rs/config/                          ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+# Two-line prompt with right-side info
+format = """
+$os\
+$shell\
+$container\
+$username\
+$hostname\
+$sudo\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$git_metrics\
+$package\
+$nodejs\
+$python\
+$rust\
+$golang\
+$java\
+$php\
+$lua\
+$ruby\
+$perl\
+$kotlin\
+$swift\
+$c\
+$cmake\
+$docker_context\
+$kubernetes\
+$aws\
+$gcloud\
+$azure\
+$terraform\
+$vagrant\
+$nix_shell\
+$conda\
+$env_var\
+$jobs\
+$memory_usage\
+$battery\
+$cmd_duration\
+$status\
+$time\
+$line_break\
+$character"""
+
+# Right side prompt (jika terminal support)
+right_format = """$localip"""
+
+add_newline = true
+
+# Scan timeout
+scan_timeout = 30
+command_timeout = 500
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 🖥️  SYSTEM INFO
+# ══════════════════════════════════════════════════════════════════════════════
+
+# OS Icon
+[os]
+disabled = false
+style = "bold blue"
+format = "[$symbol]($style) "
+
+[os.symbols]
+Fedora = "🎩"
+Ubuntu = "🟠"
+Debian = "🔴"
+Arch = "🔷"
+Alpine = "🏔️"
+CentOS = "💜"
+Linux = "🐧"
+Macos = "🍎"
+Windows = "🪟"
+Raspbian = "🍓"
+Mint = "🌿"
+Manjaro = "🥭"
+openSUSE = "🦎"
+Redhat = "🎩"
+FreeBSD = "😈"
+EndeavourOS = "🚀"
+Pop = "🍭"
+
+# Shell Indicator
+[shell]
+disabled = false
+bash_indicator = "bash"
+zsh_indicator = "zsh"
+fish_indicator = "fish"
+powershell_indicator = "pwsh"
+nu_indicator = "nu"
+style = "bold 245"
+format = "[$indicator]($style) "
+
+# Container (distrobox/toolbox)
+[container]
+symbol = "📦"
+style = "bold red"
+format = '[$symbol $name]($style) '
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 👤 USER & HOST
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Username
+[username]
+style_user = "bold green"
+style_root = "bold red"
+format = "[$user]($style)@"
+show_always = true
+
+# Hostname
+[hostname]
+ssh_only = false
+ssh_symbol = "🌐 "
+format = "[$ssh_symbol$hostname]($style) "
+style = "bold yellow"
+
+# Sudo - shows when sudo credentials are cached
+[sudo]
+disabled = false
+symbol = "🔓"
+style = "bold red"
+format = "[$symbol]($style) "
+
+# Local IP (right prompt)
+[localip]
+disabled = false
+ssh_only = true
+format = "[$localipv4]($style) "
+style = "bold dim white"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 📁 DIRECTORY
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Directory
+[directory]
+style = "bold cyan"
+truncation_length = 4
+truncation_symbol = "…/"
+truncate_to_repo = true
+format = "in [$path]($style)[$read_only]($read_only_style) "
+home_symbol = "🏠"
+read_only = " 🔒"
+read_only_style = "bold red"
+
+# Substitutions - show icons for common folders
+[directory.substitutions]
+"Documents" = "📄"
+"Downloads" = "📥"
+"Music" = "🎵"
+"Pictures" = "🖼️"
+"Videos" = "🎬"
+"Projects" = "💻"
+"Desktop" = "🖥️"
+".config" = "⚙️"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 🌿 GIT
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Git Branch
+[git_branch]
+symbol = "🌿"
+style = "bold purple"
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+always_show_remote = false
+
+# Git Status
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = "bold red"
+conflicted = "⚔️${count}"
+ahead = "⬆${count}"
+behind = "⬇${count}"
+diverged = "↕⬆${ahead_count}⬇${behind_count}"
+untracked = "❓${count}"
+stashed = "📦${count}"
+modified = "✏️${count}"
+staged = "✅${count}"
+renamed = "📝${count}"
+deleted = "🗑️${count}"
+
+# Git State (rebase, merge, etc)
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+style = "bold yellow"
+rebase = "REBASING"
+merge = "MERGING"
+revert = "REVERTING"
+cherry_pick = "🍒 PICKING"
+bisect = "BISECTING"
+am = "AM"
+am_or_rebase = "AM/REBASE"
+
+# Git Metrics (lines added/removed)
+[git_metrics]
+disabled = false
+added_style = "bold green"
+deleted_style = "bold red"
+format = '([+$added]($added_style))([-$deleted]($deleted_style) )'
+only_nonzero_diffs = true
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 📦 PACKAGES & LANGUAGES
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Package
+[package]
+symbol = "📦"
+format = "pkg [$symbol$version]($style) "
+style = "bold 208"
+display_private = true
+
+# Node.js
+[nodejs]
+symbol = "⬢"
+format = "via [$symbol($version )]($style)"
+style = "bold green"
+detect_extensions = ["js", "mjs", "cjs", "ts", "mts", "cts"]
+
+# Python
+[python]
+symbol = "🐍"
+format = 'via [${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+style = "bold yellow"
+pyenv_version_name = true
+
+# Rust
+[rust]
+symbol = "🦀"
+format = "via [$symbol($version )]($style)"
+style = "bold red"
+
+# Go
+[golang]
+symbol = "🐹"
+format = "via [$symbol($version )]($style)"
+style = "bold cyan"
+
+# Java
+[java]
+symbol = "☕"
+format = "via [$symbol($version )]($style)"
+style = "bold red"
+
+# PHP
+[php]
+symbol = "🐘"
+format = "via [$symbol($version )]($style)"
+style = "bold 147"
+
+# Lua
+[lua]
+symbol = "🌙"
+format = "via [$symbol($version )]($style)"
+style = "bold blue"
+
+# Ruby
+[ruby]
+symbol = "💎"
+format = "via [$symbol($version )]($style)"
+style = "bold red"
+
+# Perl
+[perl]
+symbol = "🐪"
+format = "via [$symbol($version )]($style)"
+style = "bold blue"
+
+# Kotlin
+[kotlin]
+symbol = "🅺"
+format = "via [$symbol($version )]($style)"
+style = "bold purple"
+
+# Swift
+[swift]
+symbol = "🐦"
+format = "via [$symbol($version )]($style)"
+style = "bold 202"
+
+# C
+[c]
+symbol = "©"
+format = "via [$symbol($version(-$name) )]($style)"
+style = "bold blue"
+
+# CMake
+[cmake]
+symbol = "△"
+format = "via [$symbol($version )]($style)"
+style = "bold blue"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 🐳 CONTAINERS & CLOUD
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Docker
+[docker_context]
+symbol = "🐳"
+format = "via [$symbol$context]($style) "
+style = "bold blue"
+only_with_files = true
+
+# Kubernetes
+[kubernetes]
+disabled = false
+symbol = "☸️"
+format = '[$symbol$context( \($namespace\))]($style) '
+style = "bold blue"
+detect_files = ["k8s", "kubernetes", "kubectl"]
+
+# AWS
+[aws]
+disabled = false
+symbol = "☁️"
+format = '[$symbol($profile )(\($region\) )]($style)'
+style = "bold yellow"
+
+[aws.region_aliases]
+ap-southeast-1 = "sg"
+us-east-1 = "virginia"
+us-west-2 = "oregon"
+
+# Google Cloud
+[gcloud]
+disabled = false
+symbol = "☁️"
+format = '[$symbol$account(@$domain)(\($region\))]($style) '
+style = "bold blue"
+
+# Azure
+[azure]
+disabled = false
+symbol = "☁️"
+format = '[$symbol($subscription)]($style) '
+style = "bold blue"
+
+# Terraform
+[terraform]
+symbol = "💠"
+format = '[$symbol$workspace]($style) '
+style = "bold 105"
+
+# Vagrant
+[vagrant]
+symbol = "⍱"
+format = "via [$symbol($version )]($style)"
+style = "bold cyan"
+
+# Nix Shell
+[nix_shell]
+symbol = "❄️"
+format = '[$symbol$state( \($name\))]($style) '
+style = "bold blue"
+impure_msg = "impure"
+pure_msg = "pure"
+
+# Conda
+[conda]
+symbol = "🐍"
+format = "[$symbol$environment]($style) "
+style = "bold green"
+ignore_base = true
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ⚡ PERFORMANCE & STATUS
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Command duration
+[cmd_duration]
+min_time = 2000
+show_milliseconds = false
+format = "⏱️ [$duration]($style) "
+style = "bold yellow"
+show_notifications = false
+
+# Exit Status
+[status]
+disabled = false
+symbol = "❌"
+success_symbol = ""
+format = '[$symbol$status]($style) '
+style = "bold red"
+map_symbol = true
+recognize_signal_code = true
+
+# Jobs (background processes)
+[jobs]
+disabled = false
+symbol = "⚙️"
+number_threshold = 1
+symbol_threshold = 1
+format = "[$symbol$number]($style) "
+style = "bold blue"
+
+# Memory Usage
+[memory_usage]
+disabled = false
+threshold = 75
+symbol = "🧠"
+format = "$symbol[${ram}( | ${swap})]($style) "
+style = "bold dimmed white"
+
+# Battery
+[battery]
+disabled = false
+full_symbol = "🔋"
+charging_symbol = "⚡"
+discharging_symbol = "🔋"
+unknown_symbol = "🔌"
+empty_symbol = "💀"
+format = "[$symbol$percentage]($style) "
+
+[[battery.display]]
+threshold = 10
+style = "bold red"
+discharging_symbol = "💀"
+
+[[battery.display]]
+threshold = 30
+style = "bold yellow"
+discharging_symbol = "🔋"
+
+[[battery.display]]
+threshold = 100
+style = "bold green"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 🕐 TIME
+# ══════════════════════════════════════════════════════════════════════════════
+
+[time]
+disabled = false
+format = "🕐[$time]($style) "
+style = "bold white"
+time_format = "%H:%M:%S"
+utc_time_offset = "local"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ✨ PROMPT CHARACTER
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Prompt character - colorful arrow
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold purple)"
+vimcmd_replace_one_symbol = "[❮](bold yellow)"
+vimcmd_replace_symbol = "[❮](bold yellow)"
+vimcmd_visual_symbol = "[❮](bold cyan)"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 🔧 CUSTOM ENVIRONMENT VARIABLES
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Display custom env vars (example: show EDITOR)
+[env_var.EDITOR]
+disabled = true
+variable = "EDITOR"
+format = "[$env_value]($style) "
+style = "dimmed white"
+
+# Display virtual env name differently
+[env_var.VIRTUAL_ENV]
+disabled = true
+variable = "VIRTUAL_ENV"
+format = "(🐍$env_value) "
+style = "bold yellow"
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 🎨 CUSTOM COMMANDS (optional examples)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Uncomment to use custom commands
+
+# [custom.git_email]
+# command = "git config user.email 2>/dev/null"
+# when = "git rev-parse --git-dir 2>/dev/null"
+# format = "[$output]($style) "
+# style = "dimmed white"
+
+# [custom.docker_running]
+# command = "docker ps -q | wc -l"
+# when = "command -v docker"
+# format = "🐳[$output containers]($style) "
+# style = "bold blue"
